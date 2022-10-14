@@ -10,4 +10,6 @@ ctrl-alt-左键
 
 # 默认编码设置为 LF
 settings -> Packages -> line-ending-selector -> LF
+# 默认缩进设置为 4
+settings -> Editor -> Tab Length
 ```
