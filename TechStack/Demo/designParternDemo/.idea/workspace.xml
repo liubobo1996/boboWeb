@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7943fa41-be54-4c8a-a52b-62fa73960c89" name="Default Changelist" comment="" />
+    <list default="true" id="7943fa41-be54-4c8a-a52b-62fa73960c89" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -113,7 +115,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
   <component name="ProjectId" id="1cWf5zvL4NazrK7lz9WVecr7MHs" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -279,6 +281,7 @@
       <workItem from="1593759575935" duration="74000" />
       <workItem from="1666159657419" duration="19000" />
       <workItem from="1666159703267" duration="5682000" />
+      <workItem from="1666167353988" duration="781000" />
     </task>
     <task id="LOCAL-00001" summary="gradle 空工程">
       <created>1572157618427</created>
