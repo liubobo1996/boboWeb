@@ -18,7 +18,7 @@ https://segmentfault.com/a/1190000039392972
     4. 使用
 
 ## 1. 特点、结构和重要字段
-![](C:\Users\o\Desktop\boboWeb\MyPic\HashMap 结构.jpg)
+![](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
 
 ```bash
 # 特点
