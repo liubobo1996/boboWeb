@@ -1,5 +1,6 @@
-https://juejin.cn/post/6844904111817637901
-https://segmentfault.com/a/1190000039392972
+
+
+
 
 # 目录
     1. 特点、结构和重要字段
@@ -16,6 +17,7 @@ https://segmentfault.com/a/1190000039392972
         3.5 put(K key, V value)
         3.6 get(Object key)
     4. 使用
+    5. 参考链接
 
 ## 1. 特点、结构和重要字段
 ![](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
@@ -224,7 +226,7 @@ static int indexFor(int hash, int length) {
 # 16 扩容到 32
 hash & oldCap == 0 扩容后 索引不变
 hash & oldCap != 0 扩容后 新索引 = 旧索引 + 16
-# 图解见顶部链接
+# 图解见底部链接
 ```
 
 #### 3.5 put(K key, V value)
@@ -269,3 +271,7 @@ for (String key:gua.keySet()) {
 # 访问不存在的 key 会得到 null
 # HashMap 在第一次 put 元素时初始化
 ```
+
+## 5. 参考链接
+1. [详解 HashMap 数据结构](https://juejin.cn/post/6844904111817637901)
+2. [tableSizeFor 方法图解](https://segmentfault.com/a/1190000039392972)
