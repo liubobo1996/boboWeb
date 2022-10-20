@@ -5,13 +5,18 @@ https://segmentfault.com/a/1190000039392972
 ## 1. 特点、结构和重要字段
 ```bash
 # 特点
-# HashMap 继承自 Map
 1. key-value 结构, 数据类型不限制
 2. 根据 key 计算 hash 值进而计算索引, 根据索引存储 Node<K,V>
-3. 由于计算结果的无序性, 存储是无序的
+3. 计算结果的无序性导致了元素存储的无序性
 4. 最多一个 key 为 null (不约束 value)
-5. 查询效率很高
-6. 线程不安全
+5. 查询效率很高, 但线程不安全
+6. 查找/插入元素的时间复杂度
+    - 最好情况 不存在哈希碰撞, O(1)
+    - 中间情况 链表转化为红黑树, O(logn)
+    - 最坏情况 所有元素都映射到同一个 table, 等价于一个链表, O(n)
+7. 减少 hash 碰撞的办法
+    - 改善 hash 算法
+    - 扩大 table 容量
 
 # 结构
 1. 底层是一个数组, 名为 table, 默认初始容量 16
@@ -24,8 +29,12 @@ https://segmentfault.com/a/1190000039392972
 #     Node<K,V> next;
 #     ...
 # }    
-4. 当产生 hash 碰撞(计算的索引相同), Node<k1, v1> 指向 Node<k2, v2>, 链表长度变为 2
-5. 减少 hash 碰撞的办法: 改善 hash 算法 / 扩大 table 容量  
+4. hash 碰撞 (计算的索引相同), 通过 equals 判断是否存在相同的 key
+    - 存在则覆盖该 key 的 value
+    - 不存在则 Node<k1, v1> 指向 Node<k2, v2>, 链表长度变为 2
+5. 链表长度大于阈值 (默认为 8)
+    - 数据量 < 64, 扩大 table 容量
+    - 数据量 ≥ 64, 链表转化为红黑树, 链表长度 < 6 红黑树退化为链表
 
 # 重要字段
 size # 已存储的数据量, 即 Node 的总数
@@ -33,7 +42,7 @@ loadFactor # 负载因子, 默认 0.75
 threshold # table 的最大容量, 2^n, 最大为 2^30
           # threshold = 数组长度 length * 负载因子 loadFactor
 ```
-![图_HashMap结构](https://github.com/liubobo1996/Java-Web/raw/main/MyPic/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+![图_HashMap结构](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap%20%E7%BB%93%E6%9E%84.jpg)
 
 ---
 ## 2. 场景
@@ -57,26 +66,27 @@ HashMap(int initialCapacity, float loadFactor) # HashMap(7, 0.75)
 this.loadFactor = loadFactor; # this.loadFactor = 0.75
 # 由 tableSizeFor 函数计算最大容量为 8
 this.threshold = tableSizeFor(initialCapacity); # this.threshold = 8
-# 这里不用 this.threshold = tableSizeFor(initialCapacity) * this.loadFactor;
-# 原因在于第一次 put 元素时才会初始化, threshold 重新赋值为实际容量 (最大容量 8, 实际容量 8 x 0.75 = 6)
 ```
 ###### 2.2 第一次 put 元素时初始化
 ```bash
-# 计算实际容量
+# 计算实际容量, threshold 被重新赋值
 threshold = threshold * loadFactor # 实际容量 6 = 最大容量 8 * 负载因子 0.75
 # put 第一个元素
 ```
 ###### 2.3 扩容
 ```bash
-# 扩容
-# 已存储的数据量 > 实际容量, table 长度 变为最大容量(threshold 的旧值)的 2 倍
-size > 6
-length = 8 * 2
+# 扩容的三种场景
+# 1. table 为空或其长度为 0
+# 2. 链表长度 > 8 且数据量 < 64
+# 3. 数据量 > 实际容量
+
+# 扩容结果
+# table length 变为最大容量(threshold 的旧值)的 2 倍
 ```
 ###### 2.4 链表转红黑树
 ```bash
 # 链表和红黑树的转换
-          链表长度 > 8 且数据量 > 64 (MIN_TREEIFY_CAPACITY)
+          链表长度 > 8 且数据量 >= 64 (MIN_TREEIFY_CAPACITY)
         ----------------------------------------------->
     链表                                                 红黑树
         <-----------------------------------------------
@@ -132,20 +142,15 @@ static final int tableSizeFor(int cap) {
 原始值   00001xxx xxxxxxxx xxxxxxxx xxxxxxxx [共32位]
 右移1位  000001xx xxxxxxxx xxxxxxxx xxxxxxxx
 或运算   000011xx xxxxxxxx xxxxxxxx xxxxxxxx
-
 右移2位  00000011 xxxxxxxx xxxxxxxx xxxxxxxx
 或运算   00001111 xxxxxxxx xxxxxxxx xxxxxxxx
-
 右移4位  00000000 1111xxxx xxxxxxxx xxxxxxxx
 或运算   00001111 1111xxxx xxxxxxxx xxxxxxxx
-
 右移8位  00000000 00001111 1111xxxx xxxxxxxx
 或运算   00001111 11111111 1111xxxx xxxxxxxx
-
 右移16位 00000000 00000000 00001111 11111111
 或运算   00001111 11111111 11111111 11111111
-
-结果加一 00010000 00000000 00000000 00000000
+结果加1  00010000 00000000 00000000 00000000
 # 不管该 32 位原始值多大，都能将其转换，只是值较小时，可能多做几次无意义操作
 # 这个方法之所以高效，是因为移位运算和或运算都属于比较底层的操作
 ```
@@ -157,10 +162,10 @@ static final int tableSizeFor(int cap) {
 # }
 ```
 ```bash
-# 1. key.hashCode() 计算 key 的 hashCode 值
+# 1. key.hashCode()
     # s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]
     # s[i] 是字符串的第 i 个字符的 ASCII 码，n 是字符串的长度，^ 表示求幂。空字符串的哈希值为 0。
-# 2. 将 hashCode 的高 16 位与低 16 位进行异或运算
+# 2. 将 hashCode 右移 16位后与原值进行异或运算
 
 # 这样做是从速度、质量等多方面综合考虑的，而且将高位和低位进行混合运算，这样是可以有效降低冲突概率的。
 # 另外，高位是可以保证不变的，变的是低位，并且低位中掺杂了高位的信息，最后生成的 hash 值的随机性会增大。
@@ -174,11 +179,11 @@ static final int tableSizeFor(int cap) {
 
 00011011 11100011 11111111 11100111 # 异或 (无进位加法)      
 ```
-#### 3.3 计算索引 i (取余)
+#### 3.3 indexFor(int hash, int length)
 ```bash
 # 暴力方法计算索引 i
 # 相对于位运算更消耗性能
-hash % length                           # hash 为 3.2 hash(Object key) 的返回值
+hash % length
 
 # HashMap 作者通过位运算计算索引 i
 # jdk1.7 的源码，jdk1.8 没有这个方法，但是原理一样
@@ -186,10 +191,11 @@ static int indexFor(int hash, int length) {
     return hash & (length-1);
 }                        
 ```
-![图_indexFor](https://github.com/liubobo1996/Java-Web/raw/main/MyPic/HashMap%20indexFor.png)
+![图_indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap%20indexFor.png)
 
-#### 3.4 扩容
+#### 3.4 resize()
 ```bash
+# 扩容后新索引的计算
 # 16 扩容到 32
 hash & oldCap == 0 扩容后 索引不变
 hash & oldCap != 0 扩容后 新索引 = 旧索引 + 16
