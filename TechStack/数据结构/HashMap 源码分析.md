@@ -18,7 +18,7 @@
 4. 参考链接
 
 ## 1. 基础
-![](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+![HashMap 结构](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
 
 #### 特点
 1. key-value 结构, 数据类型不限制
@@ -158,6 +158,8 @@ static final int tableSizeFor(int cap) {
         return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
 }
 ```
+![HashMap tableSizeFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+
 3. 移位思想
 ```
 求大于 5 且最接近 5 的 2 的幂次方 (8)
@@ -235,7 +237,7 @@ static int indexFor(int hash, int length) {
     return hash & (length-1);
 }   
 ```
-![图_indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap%20indexFor.png)
+![HashMap indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20indexFor.png)
 
 #### resize()
 ```
@@ -250,7 +252,7 @@ static int indexFor(int hash, int length) {
 ```
 此处介绍的是 putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict), 因为 put() 其实就是直接调用的 putVal()
 ```
-![图_put](https://github.com/liubobo1996/Java-Web/raw/main/MyPic/HashMap%20put.jpg)
+![HashMap put](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20put.png)
 
 #### get(Object key)
 ```
