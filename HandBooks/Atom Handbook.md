@@ -1,4 +1,6 @@
 ```bash
+# 命令框
+ctrl-shift-p
 # 代码 reformat
 ctrl-alt-B
 # 指定折叠的缩进级别，其中N是缩进深度。(常用N=2)
@@ -12,4 +14,6 @@ ctrl-alt-左键
 settings -> Packages -> line-ending-selector -> LF
 # 默认缩进设置为 4
 settings -> Editor -> Tab Length
+
+
 ```
