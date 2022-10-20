@@ -1,20 +1,41 @@
 https://juejin.cn/post/6844904111817637901
-
 https://segmentfault.com/a/1190000039392972
 
+# 目录
+    1. 特点、结构和重要字段
+    2. 场景
+        2.1 构造函数
+        2.2 第一次 put 元素时初始化
+        2.3 扩容
+        2.4 链表转红黑树
+    3. 关键方法分析
+        3.1 tableSizeFor(int cap)
+        3.2 hash(Object key)
+        3.3 indexFor(int hash, int length)
+        3.4 resize()
+        3.5 put(K key, V value)
+        3.6 get(Object key)
+    4. 使用
+
 ## 1. 特点、结构和重要字段
+![](C:\Users\o\Desktop\boboWeb\MyPic\HashMap 结构.jpg)
+
 ```bash
 # 特点
 1. key-value 结构, 数据类型不限制
 2. 根据 key 计算 hash 值进而计算索引, 根据索引存储 Node<K,V>
 3. 计算结果的无序性导致了元素存储的无序性
 4. 最多一个 key 为 null (不约束 value)
-5. 查询效率很高, 但线程不安全
-6. 查找/插入元素的时间复杂度
+5. 查询效率高
+6. 线程不安全
+    - 因为 put(), resize() 等方法允许多线程操作同一个数组
+    - 可能造成数据异常甚至死循环
+    - 线程安全的 Map 可以选择 ConcurrentHashMap
+7. 查找/插入元素的时间复杂度
     - 最好情况 不存在哈希碰撞, O(1)
     - 中间情况 链表转化为红黑树, O(logn)
     - 最坏情况 所有元素都映射到同一个 table, 等价于一个链表, O(n)
-7. 减少 hash 碰撞的办法
+8. 减少 hash 碰撞的办法
     - 改善 hash 算法
     - 扩大 table 容量
 
@@ -42,7 +63,7 @@ loadFactor # 负载因子, 默认 0.75
 threshold # table 的最大容量, 2^n, 最大为 2^30
           # threshold = 数组长度 length * 负载因子 loadFactor
 ```
-![图_HashMap结构](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+
 
 ---
 ## 2. 场景
@@ -67,12 +88,14 @@ this.loadFactor = loadFactor; # this.loadFactor = 0.75
 # 由 tableSizeFor 函数计算最大容量为 8
 this.threshold = tableSizeFor(initialCapacity); # this.threshold = 8
 ```
+
 ###### 2.2 第一次 put 元素时初始化
 ```bash
 # 计算实际容量, threshold 被重新赋值
 threshold = threshold * loadFactor # 实际容量 6 = 最大容量 8 * 负载因子 0.75
 # put 第一个元素
 ```
+
 ###### 2.3 扩容
 ```bash
 # 扩容的三种场景
@@ -83,6 +106,7 @@ threshold = threshold * loadFactor # 实际容量 6 = 最大容量 8 * 负载因
 # 扩容结果
 # table length 变为最大容量(threshold 的旧值)的 2 倍
 ```
+
 ###### 2.4 链表转红黑树
 ```bash
 # 链表和红黑树的转换
@@ -154,6 +178,7 @@ static final int tableSizeFor(int cap) {
 # 不管该 32 位原始值多大，都能将其转换，只是值较小时，可能多做几次无意义操作
 # 这个方法之所以高效，是因为移位运算和或运算都属于比较底层的操作
 ```
+
 #### 3.2 hash(Object key)
 ```bash
 # static final int hash(Object key) {
@@ -215,12 +240,13 @@ hash & oldCap != 0 扩容后 新索引 = 旧索引 + 16
 # 因为 get() 其实就是直接调用的 getNode()
 
 # 前置判断
-# 判断索引处的第一个 Node 的 key 值是否和参数 key 相同，相同则返回该 Node
-# 索引处的第一个 Node 不符合要求
-    # 判断红黑树还是链表, 按类型返回查询结果
+# 从索引处的第一个 Node 开始遍历, 判断其 key 值和参数的 key 是否相同
+    # 1. 相同, 返回该 Node
+    # 2. 不相同, 判断结构 (红黑树/链表), 按类型返回查询结果
 ```
 
-## 使用
+---
+## 4. 使用
 ```bash
 # new
 HashMap<String, String> taoer = new HashMap<>();
