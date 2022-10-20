@@ -1,24 +1,21 @@
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-	- [1. 基础](#1-基础)
-			- [特点](#特点)
-			- [结构](#结构)
-			- [重要字段](#重要字段)
-	- [2. 场景](#2-场景)
-			- [构造函数](#构造函数)
-			- [2.2 第一次 put 元素时初始化](#22-第一次-put-元素时初始化)
-			- [2.3 扩容](#23-扩容)
-			- [2.4 链表和红黑树的转换](#24-链表和红黑树的转换)
-	- [3. 关键方法分析](#3-关键方法分析)
-			- [3.1 tableSizeFor(int cap)](#31-tablesizeforint-cap)
-			- [3.2 hash(Object key)](#32-hashobject-key)
-			- [3.3 indexFor(int hash, int length)](#33-indexforint-hash-int-length)
-			- [3.4 resize()](#34-resize)
-			- [3.5 put(K key, V value)](#35-putk-key-v-value)
-			- [3.6 get(Object key)](#36-getobject-key)
-	- [4. 参考链接](#4-参考链接)
-
-<!-- /TOC -->
+# 目录
+1. 基础
+    - 特点
+    - 结构
+    - 重要字段
+2. 场景
+    - 构造函数
+    - 第一次 put 元素时初始化
+    - 扩容
+    - 链表和红黑树的转换
+3. 关键方法分析
+    - tableSizeFor(int cap)
+    - hash(Object key)
+    - indexFor(int hash, int length)
+    - resize()
+    - put(K key, V value)
+    - get(Object key)
+4. 参考链接
 
 ## 1. 基础
 ![](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap/HashMap%20%E7%BB%93%E6%9E%84.jpg)
@@ -99,7 +96,7 @@ this.loadFactor = loadFactor;
 this.threshold = tableSizeFor(initialCapacity);
 ```
 
-#### 2.2 第一次 put 元素时初始化
+#### 第一次 put 元素时初始化
 ```
 计算实际容量, threshold 被重新赋值
 实际容量 6 = 最大容量 8 * 负载因子 0.75
@@ -109,7 +106,7 @@ threshold = threshold * loadFactor
 ...put...
 ```
 
-#### 2.3 扩容
+#### 扩容
 - 扩容的三种场景
     1. table 为空或其长度为 0
     2. 链表长度 > 8 且数据量 < 64
@@ -117,7 +114,7 @@ threshold = threshold * loadFactor
 - 扩容结果
     - table length 变为最大容量(threshold 的旧值)的 2 倍
 
-#### 2.4 链表和红黑树的转换
+#### 链表和红黑树的转换
 ```
           链表长度 > 8 且数据量 >= 64 (MIN_TREEIFY_CAPACITY)
         ----------------------------------------------->
@@ -128,7 +125,7 @@ threshold = threshold * loadFactor
 
 ---
 ## 3. 关键方法分析
-#### 3.1 tableSizeFor(int cap)
+#### tableSizeFor(int cap)
 1. 暴力方法实现的 tableSizeFor
 ```
 涉及对数、除、取整，强制类型转换、指数五种高级运算, 必然需要大量底层操作, 严重降低性能
@@ -200,7 +197,7 @@ static final int tableSizeFor(int cap) {
 这个方法之所以高效，是因为移位运算和或运算都属于比较底层的操作
 ```
 
-#### 3.2 hash(Object key)
+#### hash(Object key)
 1. hash()
 ```
 static final int hash(Object key) {
@@ -225,7 +222,7 @@ s[i] 是字符串的第 i 个字符的 ASCII 码，n 是字符串的长度，^ �
 00011011 11100011 11111111 11100111 // 异或 (无进位加法)  
 ```
 
-#### 3.3 indexFor(int hash, int length)
+#### indexFor(int hash, int length)
 1. 暴力方法计算索引 i
 ```
 // 相对于位运算更消耗性能
@@ -240,7 +237,7 @@ static int indexFor(int hash, int length) {
 ```
 ![图_indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/HashMap%20indexFor.png)
 
-#### 3.4 resize()
+#### resize()
 ```
 扩容后新索引的计算
     16 扩容到 32
@@ -249,13 +246,13 @@ static int indexFor(int hash, int length) {
 图解见底部链接
 ```
 
-#### 3.5 put(K key, V value)
+#### put(K key, V value)
 ```
 此处介绍的是 putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict), 因为 put() 其实就是直接调用的 putVal()
 ```
 ![图_put](https://github.com/liubobo1996/Java-Web/raw/main/MyPic/HashMap%20put.jpg)
 
-#### 3.6 get(Object key)
+#### get(Object key)
 ```
 此处介绍的是 getNode(int hash, Object key), 因为 get() 其实就是直接调用的 getNode()
 
