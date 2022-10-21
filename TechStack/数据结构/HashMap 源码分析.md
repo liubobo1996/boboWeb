@@ -268,3 +268,4 @@ static int indexFor(int hash, int length) {
 ## 4. 参考链接
 1. [详解 HashMap 数据结构](https://juejin.cn/post/6844904111817637901)
 2. [tableSizeFor 方法图解](https://segmentfault.com/a/1190000039392972)
+3. [HashMap 常用方法测试](https://javaguide.cn/java/collection/hashmap-source-code.html#hashmap-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%B5%8B%E8%AF%95)
