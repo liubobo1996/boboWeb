@@ -51,7 +51,7 @@ static class Node<K,V> implements Map.Entry<K,V> {
         ...
 }   
 ```
-4. hash 碰撞 (计算的索引相同), 通过 equals 判断是否存在相同的 key
+4. hash 碰撞 (计算的 hash 值相同), 通过 equals 判断是否存在相同的 key
     - 存在则覆盖该 key 的 value
     - 不存在则 Node<k1, v1> 指向 Node<k2, v2>, 链表长度变为 2
 5. 链表长度大于阈值 (默认为 8)
