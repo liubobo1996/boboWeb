@@ -158,7 +158,7 @@ static final int tableSizeFor(int cap) {
         return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
 }
 ```
-![tableSizeFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/tableSizeFor.jpg)
+![tableSizeFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/tableSizeFor.png)
 
 3. 移位思想
 ```
