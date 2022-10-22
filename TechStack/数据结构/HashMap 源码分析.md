@@ -18,7 +18,7 @@
 4. 参考链接
 
 ## 1. 基础
-![HashMap 结构](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+![structure](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/structure.jpg)
 
 #### 特点
 1. key-value 结构, 数据类型不限制
@@ -158,7 +158,7 @@ static final int tableSizeFor(int cap) {
         return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
 }
 ```
-![HashMap tableSizeFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap%20%E7%BB%93%E6%9E%84.jpg)
+![tableSizeFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/tableSizeFor.jpg)
 
 3. 移位思想
 ```
@@ -237,7 +237,7 @@ static int indexFor(int hash, int length) {
     return hash & (length-1);
 }   
 ```
-![HashMap indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap%20indexFor.png)
+![indexFor](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/indexFor.png)
 
 #### resize()
 ```
@@ -252,7 +252,7 @@ static int indexFor(int hash, int length) {
 ```
 此处介绍的是 putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict), 因为 put() 其实就是直接调用的 putVal()
 ```
-![HashMap put](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap%20put.png)
+![put](https://github.com/liubobo1996/boboWeb/raw/master/MyPic/Collection/HashMap/put.png)
 
 #### get(Object key)
 ```
