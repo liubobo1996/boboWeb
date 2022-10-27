@@ -94,4 +94,4 @@ public static void delete(Integer id) {
   Uncaught Error: Bootstrap's JavaScript requires jQuery
       at bootstrap.min.js:6:37
   ```
-* http://119.45.22.158:3344/ 无法访问可能是梯子没关 / 删除项目的 build 文件夹然后重新 run
+* http://119.45.22.158:8080/ 无法访问可能是梯子没关 / 删除项目的 build 文件夹然后重新 run
